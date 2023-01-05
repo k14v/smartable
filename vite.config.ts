@@ -1,7 +1,7 @@
 import { mergeConfig } from "vite";
 import svgr from "vite-plugin-svgr";
 import tsconfigPaths from "vite-tsconfig-paths";
-
+import { PORT } from "./env.cfg";
 const ASSET_URL = process.env.ASSET_URL || "";
 
 export default {
@@ -14,7 +14,7 @@ export default {
   server: {
     type: "vite-dev-server",
     host: "localhost",
-    port: 3000,
+    port: PORT,
   },
   plugins: [svgr(), tsconfigPaths()],
   async viteFinal(config) {

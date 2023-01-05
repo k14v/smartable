@@ -26,7 +26,7 @@ const Navbar = ({ toggleTheme, theme }: Props): JSX.Element => {
         ))}
       </div>
       <button
-        className="mr-5 bg-[#505050] w-[36px] h-[36px] flex justify-center items-center rounded-2xl"
+        className="mr-5 bg-[#505050] w-[36px] h-[36px] flex justify-center items-center rounded-xl"
         onClick={toggleTheme}
       >
         {theme === "light" ? (
