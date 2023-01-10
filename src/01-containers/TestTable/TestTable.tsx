@@ -3,11 +3,7 @@ import useSmartTable from "@hooks/use-smart-table";
 import tableColumns from "./columns";
 import TablePagination from "./TablePagination";
 import { DndContext } from "@dnd-kit/core";
-import {
-  horizontalListSortingStrategy,
-  SortableContext,
-  verticalListSortingStrategy,
-} from "@dnd-kit/sortable";
+
 import {
   restrictToHorizontalAxis,
   restrictToVerticalAxis,
