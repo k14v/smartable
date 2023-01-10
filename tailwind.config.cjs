@@ -54,7 +54,7 @@ module.exports = {
         "m-dark": "#303030",
         "l-dark": "#5a6163",
         light: "#f5f5f5",
-        "m-light": "#e5e5e5",
+        "m-light": "#ededed",
       },
     },
   },

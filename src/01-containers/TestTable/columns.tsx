@@ -9,14 +9,6 @@ const tableColumns = [
     accessor: "price",
     align: "center",
   },
-  {
-    header: "Icon",
-    accessor: "icon",
-  },
-  {
-    header: "Tendency",
-    accessor: "tendency",
-  },
 ];
 
 export default tableColumns;

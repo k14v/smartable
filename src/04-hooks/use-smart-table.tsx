@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 
+type Filter = () => boolean;
 interface Column {
   header: string;
   accessor: string;
@@ -36,10 +37,11 @@ const useSmartTable = (
   data: any,
   columns: Column[],
   pageSize?: number,
-  initPage?: number
+  initPage?: number,
+  filters?: Filter[]
 ) => {
   const [rowsState, setRowsState] = useState([]);
-  const [columnState, setColumnState] = useState<Column[]>([]);
+  const [columnState, setColumnState] = useState<Column[]>(columns);
   const [pages, setPages] = useState(0);
   const [currentPage, setCurrentPage] = useState(0);
 
@@ -52,31 +54,25 @@ const useSmartTable = (
     setRowsState(filteredRows);
   };
 
-  const handlePagination = (itemsByPage: number, currentPage: number) => {
-    const pages = Math.ceil(data.length / itemsByPage);
+  const handlePagination = (itemsByPage: number) => {
+    const pages =
+      data.lentgh % itemsByPage === 0
+        ? Math.ceil(data.length / itemsByPage)
+        : Math.ceil(data.length / itemsByPage) - 1;
     const start = itemsByPage * currentPage;
     const end = start + itemsByPage;
     const paginatedData = data.slice(start, end);
     setRowsState(paginatedData);
     setPages(pages);
-    setCurrentPage(currentPage);
   };
 
-  useEffect(() => {
-    if (pageSize) {
-      handlePagination(pageSize, currentPage);
-      setColumnState(columns);
-      return;
-    }
-    setRowsState(data);
-    setColumnState(columns);
-  }, [data, columns, pageSize]);
+  const setPage = (page: number) => {
+    setCurrentPage(page);
+  };
 
-  useEffect(() => {
-    if (pageSize && initPage) {
-      handlePagination(pageSize, initPage);
-    }
-  }, [data, pageSize]);
+  const setRows = (rows: any) => {
+    setRowsState(rows);
+  };
 
   return {
     smartRows: rowsState,
@@ -88,7 +84,8 @@ const useSmartTable = (
     handlePagination,
     pages,
     currentPage,
-    setCurrentPage,
+    setPage,
+    setRows,
   };
 };
 

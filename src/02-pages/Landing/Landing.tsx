@@ -4,7 +4,7 @@ import { useState } from "react";
 const ws = new WebSocket("wss://ws.coincap.io/prices?assets=ALL");
 
 const Landing = () => {
-  const [data, setData] = useState<any>([]);
+  const [rows, setRows] = useState<any>([]);
   const [objc, setObjc] = useState<any>({});
   ws.onmessage = function (event) {
     const json = JSON.parse(event.data);
@@ -17,11 +17,11 @@ const Landing = () => {
             name: item[0],
             price: item[1],
           }));
-        setData(formatData);
+        setRows(formatData);
       }
     } catch (err) {}
   };
-  return <div>{data && <TestTable data={data} />}</div>;
+  return <div>{rows && <TestTable data={rows} />}</div>;
 };
 
 export default Landing;

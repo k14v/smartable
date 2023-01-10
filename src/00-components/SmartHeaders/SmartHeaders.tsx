@@ -1,5 +1,4 @@
-import SortableComponent from "@components/SortableComponent";
-import STHead from "@components/STHead";
+import SortableHeader from "@components/SortableComponent/SortableComponent";
 import tableColumns from "@containers/TestTable/columns";
 import { closestCenter, DndContext, useDraggable } from "@dnd-kit/core";
 import {
@@ -26,30 +25,57 @@ interface ColumnInterface {
 
 interface Props {
   columns: ColumnInterface[];
+  updateCols: (columns: ColumnInterface[]) => void;
 }
 
-const SmartHeaders: FC<Props> = () => {
+const SmartHeaders: FC<Props> = ({ columns, updateCols }) => {
   const { setNodeRef } = useDraggable({
     id: "unique-id",
   });
+
+  const handleDragEnd = (event) => {
+    const { active, over } = event;
+    if (active.id !== over.id) {
+      const newColumns = columns.map((column) => {
+        if (column.accessor === active.id) {
+          return {
+            ...column,
+            accessor: over.id,
+          };
+        }
+        if (column.accessor === over.id) {
+          return {
+            ...column,
+            accessor: active.id,
+          };
+        }
+        return column;
+      });
+
+      updateCols(newColumns);
+    }
+  };
+
   return (
     <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
       <SortableContext
-        items={tableColumns.map((column) => column.accessor)}
+        items={columns.map((column) => column.accessor)}
         strategy={horizontalListSortingStrategy}
       >
-        {tableColumns.map((column) => {
-          return (
-            <div ref={setNodeRef}>
-              <SortableComponent
-                key={column + "sort"}
-                id={column.accessor}
-                n={column.accessor}
-              />
-              <STHead key={column.accessor + "head"} column={column} />
-            </div>
-          );
-        })}
+        <thead>
+          {columns.map((column) => {
+            return (
+              <th ref={setNodeRef}>
+                <SortableHeader
+                  colWidth={column.width}
+                  key={column + "sort"}
+                  id={column.accessor}
+                  n={column.accessor}
+                />
+              </th>
+            );
+          })}
+        </thead>
       </SortableContext>
     </DndContext>
   );

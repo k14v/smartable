@@ -5,9 +5,10 @@ import { FC } from "react";
 interface Props {
   n: React.ReactNode;
   id: string;
+  colWidth?: number | undefined;
 }
 
-const SortableComponent: FC<Props> = ({ n, id }) => {
+const SortableHeader: FC<Props> = ({ n, id, colWidth }) => {
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id });
 
@@ -16,10 +17,16 @@ const SortableComponent: FC<Props> = ({ n, id }) => {
   };
 
   return (
-    <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
+    <th
+      className="w-full flex justify-center items-center"
+      ref={setNodeRef}
+      style={{ width: colWidth || "auto", ...style }}
+      {...attributes}
+      {...listeners}
+    >
       {n}
-    </div>
+    </th>
   );
 };
 
-export default SortableComponent;
+export default SortableHeader;
