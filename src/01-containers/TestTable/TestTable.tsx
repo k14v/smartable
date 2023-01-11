@@ -1,5 +1,5 @@
 import { FC, useEffect, useState } from "react";
-import useSmartTable from "@hooks/use-smart-table";
+import useSmartTable, { ColumnInterface } from "@hooks/use-smart-table";
 import tableColumns from "./columns";
 import TablePagination from "./PaginationComponent";
 import { DndContext } from "@dnd-kit/core";

@@ -1,9 +1,7 @@
 import { useState, useEffect } from "react";
 
-type Filter = () => boolean;
-
 // different kinds of columns to extend.
-interface Column {
+export interface ColumnInterface {
   header: string;
   accessor: string;
   isSortable?: boolean;
@@ -13,13 +11,12 @@ interface Column {
   width?: number;
   align?: "start" | "center" | "end";
 }
-
-interface ColumnComponent extends Column {
+export interface ColumnComponent extends ColumnInterface {
   renderComponent?: (row: any) => JSX.Element;
   renderHeaderComponent?: () => JSX.Element;
 }
 
-const checkIfFormatting = (row: any, col: Column) => {
+const checkIfFormatting = (row: any, col: ColumnInterface) => {
   if (col.format) {
     return col.format(row[col.accessor]);
   }
@@ -36,7 +33,7 @@ const filterByColumn = (data: any, filter: string[], column: string) => {
 
 const useSmartTable = (
   data: any,
-  columns: Column[],
+  columns: ColumnInterface[],
   pageSize?: number,
   initPage?: number
 ) => {
@@ -72,7 +69,6 @@ const useSmartTable = (
   };
 
   const setRows = (rows: any) => {
-    console.log("rows muestramelas", rows);
     setRowsState(rows);
   };
 
