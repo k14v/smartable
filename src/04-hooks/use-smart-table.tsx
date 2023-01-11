@@ -23,14 +23,6 @@ const checkIfFormatting = (row: any, col: ColumnInterface) => {
   return row[col.accessor];
 };
 
-const filterByColumn = (data: any, filter: string[], column: string) => {
-  const filteredRows = filter.forEach((f) => {
-    return data.filter((row: any) => {
-      return row[column].toString().toLowerCase().includes(f.toLowerCase());
-    });
-  });
-};
-
 const useSmartTable = (
   data: any,
   columns: ColumnInterface[],
@@ -38,7 +30,7 @@ const useSmartTable = (
   initPage?: number
 ) => {
   const [rowsState, setRowsState] = useState([]);
-  const [columnState, setColumnState] = useState<Column[]>(columns);
+  const [columnState, setColumnState] = useState<ColumnInterface[]>(columns);
   const [pages, setPages] = useState(0);
   const [currentPage, setCurrentPage] = useState(0);
   const [selectedRows, setSelectedRows] = useState<any>([]);
@@ -52,16 +44,18 @@ const useSmartTable = (
     }
   };
 
-  const handlePagination = (itemsByPage: number) => {
-    const pages =
-      data.lentgh % itemsByPage === 0
-        ? Math.ceil(data.length / itemsByPage)
-        : Math.ceil(data.length / itemsByPage) - 1;
-    const start = itemsByPage * currentPage;
-    const end = start + itemsByPage;
-    const paginatedData = data.slice(start, end);
-    setRowsState(paginatedData);
-    setPages(pages);
+  const handlePagination = () => {
+    if (pageSize) {
+      const pages =
+        data.lentgh % pageSize === 0
+          ? Math.ceil(data.length / pageSize)
+          : Math.ceil(data.length / pageSize) - 1;
+      const start = pageSize * currentPage;
+      const end = start + pageSize;
+      const paginatedData = data.slice(start, end);
+      setRowsState(paginatedData);
+      setPages(pages);
+    }
   };
 
   const setPage = (page: number) => {
@@ -76,7 +70,6 @@ const useSmartTable = (
     smartRows: rowsState,
     smartColumns: columnState,
     updateCols: setColumnState,
-    filterByColumn,
     initData: data,
     handlePagination,
     pages,
