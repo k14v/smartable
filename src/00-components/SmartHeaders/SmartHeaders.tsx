@@ -44,13 +44,13 @@ const SmartHeaders: FC<Props> = ({ columns, updateCols }) => {
         if (column.accessor === active.id) {
           return {
             ...column,
-            accessor: over.id,
+            accessor: `${over.id}`,
           };
         }
         if (over && column.accessor === over.id) {
           return {
             ...column,
-            accessor: active.id,
+            accessor: `${active.id}`,
           };
         }
         return column;
