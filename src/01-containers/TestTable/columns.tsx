@@ -1,3 +1,5 @@
+import { ColumnInterface } from "@hooks/use-smart-table";
+
 const tableColumns = [
   {
     header: "Name",
@@ -9,6 +11,6 @@ const tableColumns = [
     accessor: "price",
     align: "center",
   },
-];
+] satisfies ColumnInterface[];
 
 export default tableColumns;

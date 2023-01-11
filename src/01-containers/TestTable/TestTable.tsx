@@ -30,7 +30,7 @@ const TestTable: FC<Props> = ({ data }) => {
   } = useSmartTable(data, tableColumns, 10, 0);
 
   useEffect(() => {
-    handlePagination(10);
+    handlePagination();
   }, [data]);
 
   return (
