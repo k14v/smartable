@@ -1,7 +1,7 @@
 import { FC, useEffect, useState } from "react";
 import useSmartTable from "@hooks/use-smart-table";
 import tableColumns from "./columns";
-import TablePagination from "./TablePagination";
+import TablePagination from "./PaginationComponent";
 import { DndContext } from "@dnd-kit/core";
 
 import {
@@ -14,14 +14,8 @@ interface Props {
   data: any;
 }
 
-interface FilterInterface {
-  filters: () => boolean;
-}
-
 const TestTable: FC<Props> = ({ data }) => {
-  const [dragOver, setDragOver] = useState("");
   const [columnHover, setColumnHover] = useState(false);
-  const [tableFilters, setTableFilters] = useState<FilterInterface[]>([]);
   const {
     smartRows,
     smartColumns,
@@ -46,7 +40,6 @@ const TestTable: FC<Props> = ({ data }) => {
       ]}
     >
       <div className="text-xl flex flex-col text-dark dark:text-light justify-center">
-        <input onChange={(e) => filterRows(e.target.value)} />
         {data && smartColumns && smartRows && (
           <table className="bg-[#f8fafc] ">
             <SmartHeaders columns={smartColumns} updateCols={updateCols} />
