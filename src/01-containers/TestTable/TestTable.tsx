@@ -9,6 +9,7 @@ import {
   restrictToVerticalAxis,
 } from "@dnd-kit/modifiers";
 import SmartHeaders from "@components/SmartHeaders";
+import Checkbox from "@components/Checkbox";
 interface Props {
   data: any;
 }
@@ -29,7 +30,8 @@ const TestTable: FC<Props> = ({ data }) => {
     currentPage,
     pages,
     setPage,
-    filterRows,
+    selectRows,
+    selectedRows,
     setRows,
   } = useSmartTable(data, tableColumns, 10, 0);
 
@@ -46,16 +48,28 @@ const TestTable: FC<Props> = ({ data }) => {
       <div className="text-xl flex flex-col text-dark dark:text-light justify-center">
         <input onChange={(e) => filterRows(e.target.value)} />
         {data && smartColumns && smartRows && (
-          <table>
+          <table className="bg-[#f8fafc] ">
             <SmartHeaders columns={smartColumns} updateCols={updateCols} />
             <tbody>
               {smartRows &&
                 smartRows.map((row: any) => (
-                  <tr key={row.name} className="border-black py-3">
+                  <tr
+                    key={row.name}
+                    className={`dark:bg-darker py-3 ${
+                      selectedRows.includes(row.name) ? "bg-gray-200" : ""
+                    }`}
+                  >
+                    <td>
+                      <Checkbox
+                        label=""
+                        checked={selectedRows.includes(row.name)}
+                        onChange={() => selectRows(row.name)}
+                      />
+                    </td>
                     {smartColumns.map((column: any) => (
                       <td
                         key={column.accessor}
-                        className="border-black py-3"
+                        className="border-black px-3 py-3"
                         onMouseEnter={() => setColumnHover(true)}
                         onMouseLeave={() => setColumnHover(false)}
                       >

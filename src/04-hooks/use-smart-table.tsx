@@ -1,21 +1,22 @@
 import { useState, useEffect } from "react";
 
 type Filter = () => boolean;
+
+// different kinds of columns to extend.
 interface Column {
   header: string;
   accessor: string;
   isSortable?: boolean;
-  isFilterable?: boolean;
-  isSearchable?: boolean;
-  isEditable?: boolean;
-  isResizable?: boolean;
   isHidden?: boolean;
-  isGroupable?: boolean;
   isPinned?: boolean;
-  isFrozen?: boolean;
   format?: (value: any) => string | number | JSX.Element;
   width?: number;
   align?: "start" | "center" | "end";
+}
+
+interface ColumnComponent extends Column {
+  renderComponent?: (row: any) => JSX.Element;
+  renderHeaderComponent?: () => JSX.Element;
 }
 
 const checkIfFormatting = (row: any, col: Column) => {
@@ -37,21 +38,21 @@ const useSmartTable = (
   data: any,
   columns: Column[],
   pageSize?: number,
-  initPage?: number,
-  filters?: Filter[]
+  initPage?: number
 ) => {
   const [rowsState, setRowsState] = useState([]);
   const [columnState, setColumnState] = useState<Column[]>(columns);
   const [pages, setPages] = useState(0);
   const [currentPage, setCurrentPage] = useState(0);
+  const [selectedRows, setSelectedRows] = useState<any>([]);
 
-  const filterRows = (filter: string) => {
-    const filteredRows = data.filter((row: any) => {
-      return Object.values(row).some((value: any) => {
-        return value.toString().toLowerCase().includes(filter.toLowerCase());
-      });
-    });
-    setRowsState(filteredRows);
+  const handleSelectRows = (id: string) => {
+    const selected = selectedRows.includes(id);
+    if (selected) {
+      setSelectedRows(selectedRows.filter((row: any) => row !== id));
+    } else {
+      setSelectedRows([...selectedRows, id]);
+    }
   };
 
   const handlePagination = (itemsByPage: number) => {
@@ -71,6 +72,7 @@ const useSmartTable = (
   };
 
   const setRows = (rows: any) => {
+    console.log("rows muestramelas", rows);
     setRowsState(rows);
   };
 
@@ -78,7 +80,6 @@ const useSmartTable = (
     smartRows: rowsState,
     smartColumns: columnState,
     updateCols: setColumnState,
-    filterRows,
     filterByColumn,
     initData: data,
     handlePagination,
@@ -86,6 +87,8 @@ const useSmartTable = (
     currentPage,
     setPage,
     setRows,
+    selectedRows,
+    selectRows: handleSelectRows,
   };
 };
 
