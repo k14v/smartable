@@ -1,0 +1,34 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "useDefineForClassFields": true,
+    "lib": ["DOM", "DOM.Iterable", "ESNext"],
+    "allowJs": false,
+    "skipLibCheck": true,
+    "esModuleInterop": false,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "module": "CommonJS",
+    "moduleResolution": "Node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "jsx": "react-jsx",
+    "baseUrl": "./src",
+    "typeRoots": [
+      "typings",
+      "node_modules/@types"
+    ],
+    "paths": {
+      "@components/*": ["00-components/*"],
+      "@containers/*": ["01-containers/*"],
+      "@pages/*": ["02-pages/*"],
+      "@hooks/*": ["04-hooks/*"],
+      "@contexts/*": ["03-contexts/*"],
+      "@utils/*": ["05-utils/*"],
+      "@assets/*": ["06-assets/*"],
+      "@reducers/*": ["07-reducers/*"]
+    }
+  }
+}
