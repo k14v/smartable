@@ -1,13 +1,14 @@
 import { CounterActions } from "@reducers/countReducer";
 import { ToastActions } from "@reducers/toastReducer";
+import { PaginationActions } from "@reducers/paginationReducer";
 
 interface ActionInterface {
-  type: CounterActions | ToastActions;
+  type: CounterActions | ToastActions | PaginationActions;
   payload?: any;
 }
 
 type CasesInterface = {
-  [key in CounterActions | ToastActions]: <S>(
+  [key in CounterActions | ToastActions | PaginationActions]: <S>(
     state: S,
     action: ActionInterface
   ) => S;

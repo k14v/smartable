@@ -16,14 +16,19 @@ export interface ColumnComponent extends ColumnInterface {
   renderHeaderComponent?: () => JSX.Element;
 }
 
-const useSmartTable = (
-  data: any,
-  columns: ColumnInterface[],
-  pageSize?: number,
-  initPage?: number
-) => {
+interface OptionsInterface {
+  data: any;
+  columns: ColumnInterface[];
+  pageSize?: number;
+  initPage?: number;
+}
+
+const useSmartTable = (options: OptionsInterface) => {
+  const { data, columns, pageSize, initPage } = options;
+
   const [rowsState, setRowsState] = useState([]);
   const [columnState, setColumnState] = useState<ColumnInterface[]>(columns);
+  const [pinnedColumns, setPinnedColumns] = useState<ColumnInterface[]>([]);
   const [pages, setPages] = useState(0);
   const [currentPage, setCurrentPage] = useState(0);
   const [selectedRows, setSelectedRows] = useState<any>([]);
@@ -39,13 +44,11 @@ const useSmartTable = (
 
   const handlePagination = () => {
     if (pageSize) {
-      const pages =
-        data.lentgh % pageSize === 0
-          ? Math.ceil(data.length / pageSize)
-          : Math.ceil(data.length / pageSize) - 1;
-      const start = pageSize * currentPage;
-      const end = start + pageSize;
-      const paginatedData = data.slice(start, end);
+      const paginatedData = data.slice(
+        currentPage * pageSize,
+        (currentPage + 1) * pageSize
+      );
+      const pages = Math.ceil(data.length / pageSize);
       setRowsState(paginatedData);
       setPages(pages);
     }
@@ -53,6 +56,10 @@ const useSmartTable = (
 
   const setPage = (page: number) => {
     setCurrentPage(page);
+  };
+
+  const setPinned = (pinned: ColumnInterface[]) => {
+    setPinnedColumns(pinned);
   };
 
   const setRows = (rows: any) => {
@@ -68,12 +75,13 @@ const useSmartTable = (
     ),
     setPage: useCallback<typeof setPage>(setPage, []),
     setRows: useCallback<typeof setRows>(setRows, []),
+    setPinned: useCallback<typeof setPinned>(setPinned, []),
     initData: data,
     handlePagination,
     pages,
     currentPage,
-
     selectedRows,
+    pinnedColumns,
     selectRows: handleSelectRows,
   };
 };

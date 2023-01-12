@@ -26,7 +26,12 @@ const TestTable: FC = () => {
     selectRows,
     selectedRows,
     setRows,
-  } = useSmartTable(mockedData, tableColumns, 10, 0);
+  } = useSmartTable({
+    data: mockedData,
+    columns: tableColumns,
+    pageSize: 10,
+    initPage: 0,
+  });
 
   useEffect(() => {
     handlePagination();
