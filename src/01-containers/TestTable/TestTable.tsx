@@ -9,12 +9,11 @@ import {
   restrictToVerticalAxis,
 } from "@dnd-kit/modifiers";
 import SmartHeaders from "@components/SmartHeaders";
-import Checkbox from "@components/Checkbox";
-interface Props {
-  data: any;
-}
+import SmartRows from "@components/SmartRows";
+import mockedData from "@utils/mockedData";
+import StyledTestTable from "./StyledTestTable.styled";
 
-const TestTable: FC<Props> = ({ data }) => {
+const TestTable: FC = () => {
   const [columnHover, setColumnHover] = useState(false);
   const {
     smartRows,
@@ -27,11 +26,11 @@ const TestTable: FC<Props> = ({ data }) => {
     selectRows,
     selectedRows,
     setRows,
-  } = useSmartTable(data, tableColumns, 10, 0);
+  } = useSmartTable(mockedData, tableColumns, 10, 0);
 
   useEffect(() => {
     handlePagination();
-  }, [data]);
+  }, []);
 
   return (
     <DndContext
@@ -39,51 +38,19 @@ const TestTable: FC<Props> = ({ data }) => {
         columnHover ? restrictToHorizontalAxis : restrictToVerticalAxis,
       ]}
     >
-      <div className="text-xl flex flex-col text-dark dark:text-light justify-center">
-        {data && smartColumns && smartRows && (
-          <table className="bg-[#f8fafc] ">
+      <StyledTestTable>
+        {smartColumns && smartRows && (
+          <>
             <SmartHeaders columns={smartColumns} updateCols={updateCols} />
-            <tbody>
-              {smartRows &&
-                smartRows.map((row: any) => (
-                  <tr
-                    key={row.name}
-                    className={`dark:bg-darker py-3 ${
-                      selectedRows.includes(row.name) ? "bg-gray-200" : ""
-                    }`}
-                  >
-                    <td>
-                      <Checkbox
-                        label=""
-                        checked={selectedRows.includes(row.name)}
-                        onChange={() => selectRows(row.name)}
-                      />
-                    </td>
-                    {smartColumns.map((column: any) => (
-                      <td
-                        key={column.accessor}
-                        className="border-black px-3 py-3"
-                        onMouseEnter={() => setColumnHover(true)}
-                        onMouseLeave={() => setColumnHover(false)}
-                      >
-                        {column.format
-                          ? column.format(row[column.accessor])
-                          : row[column.accessor]}
-                      </td>
-                    ))}
-                  </tr>
-                ))}
-            </tbody>
-          </table>
+            <SmartRows
+              rows={smartRows}
+              smartColumns={smartColumns}
+              selectedRows={selectedRows}
+              selectRows={selectRows}
+            />
+          </>
         )}
-        {
-          <TablePagination
-            currentPage={currentPage}
-            setPage={setPage}
-            pages={pages}
-          />
-        }
-      </div>
+      </StyledTestTable>
     </DndContext>
   );
 };

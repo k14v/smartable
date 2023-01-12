@@ -11,18 +11,25 @@ export interface ActionInterface {
   payload?: number;
 }
 
+interface CounterState {
+  count: number;
+}
+
 const cases = {
-  increment: (state: any, action: ActionInterface) => {
+  increment: (state: CounterState, action: ActionInterface) => {
     return { count: state.count + 1 };
   },
-  decrement: (state: any, action: ActionInterface) => {
+  decrement: (state: CounterState, action: ActionInterface) => {
     return { count: state.count - 1 };
   },
-  reset: (state: any, action: ActionInterface) => {
+  reset: (state: CounterState, action: ActionInterface) => {
     return counterInit(action.payload!!);
   },
 };
 
-export const counterReducer = (state: any, action: ActionInterface): any => {
+export const counterReducer = (
+  state: CounterState,
+  action: ActionInterface
+): CounterState => {
   return reducerFunction(state, action, cases);
 };

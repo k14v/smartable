@@ -1,3 +1,4 @@
+import StyledSmartHeader from "@components/SortableComponent/StyledSmartHeader.styled";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { FC } from "react";
@@ -17,15 +18,16 @@ const SortableHeader: FC<Props> = ({ n, id, colWidth }) => {
   };
 
   return (
-    <th
-      className="w-full flex justify-center items-center"
+    <StyledSmartHeader
       ref={setNodeRef}
-      style={{ width: colWidth || "auto", ...style }}
+      style={style}
+      height={58}
+      width={colWidth}
       {...attributes}
       {...listeners}
     >
       {n}
-    </th>
+    </StyledSmartHeader>
   );
 };
 

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 
 // different kinds of columns to extend.
 export interface ColumnInterface {
@@ -15,13 +15,6 @@ export interface ColumnComponent extends ColumnInterface {
   renderComponent?: (row: any) => JSX.Element;
   renderHeaderComponent?: () => JSX.Element;
 }
-
-const checkIfFormatting = (row: any, col: ColumnInterface) => {
-  if (col.format) {
-    return col.format(row[col.accessor]);
-  }
-  return row[col.accessor];
-};
 
 const useSmartTable = (
   data: any,
@@ -69,13 +62,17 @@ const useSmartTable = (
   return {
     smartRows: rowsState,
     smartColumns: columnState,
-    updateCols: setColumnState,
+    updateCols: useCallback<typeof setColumnState>(
+      (state) => (console.log("pepe"), setColumnState(state)),
+      []
+    ),
+    setPage: useCallback<typeof setPage>(setPage, []),
+    setRows: useCallback<typeof setRows>(setRows, []),
     initData: data,
     handlePagination,
     pages,
     currentPage,
-    setPage,
-    setRows,
+
     selectedRows,
     selectRows: handleSelectRows,
   };

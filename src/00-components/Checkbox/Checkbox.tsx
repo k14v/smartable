@@ -1,12 +1,13 @@
-import { useState } from "react";
+import { ChangeEventHandler, useState } from "react";
 
 interface Props {
   checked?: boolean;
-  onChange: (checked: boolean) => void;
+  onChange: ChangeEventHandler<HTMLInputElement>;
   label: string;
+  width?: number;
 }
 
-const CheckboxComponent = ({ checked, onChange, label }: Props) => {
+const CheckboxComponent = ({ checked, onChange, label, width }: Props) => {
   const [isChecked, setIsChecked] = useState(checked) || false;
 
   const handleClick = (checked: boolean) => {
@@ -15,10 +16,15 @@ const CheckboxComponent = ({ checked, onChange, label }: Props) => {
 
   return (
     <div
+      style={{
+        width: `${width}px` || "42px",
+        display: "flex",
+        justifyContent: "center",
+      }}
       className="m-3 flex items-center text-dark dark:text-light"
       onClick={() => handleClick(!isChecked)}
     >
-      <input type="checkbox" checked={isChecked} />
+      <input type="checkbox" checked={isChecked} onChange={onChange} />
       <label className="ml-2 hover:cursor-pointer ">{label}</label>
     </div>
   );
