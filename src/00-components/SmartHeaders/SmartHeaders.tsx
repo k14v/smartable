@@ -1,4 +1,4 @@
-import SortableHeader from "@components/SortableComponent/SortableComponent";
+import SortableHeader from "@components/SortableHeader/SortableHeader";
 import {
   closestCenter,
   DndContext,
@@ -57,7 +57,7 @@ const SmartHeaders: FC<Props> = ({ columns, updateCols }) => {
         items={columns.map((column) => column.accessor)}
         strategy={horizontalListSortingStrategy}
       >
-        <div className="flex ml-[60px]">
+        <div className="flex ml-[70px]">
           <span>&nbsp;</span>
           {columns.map((column) => {
             return (

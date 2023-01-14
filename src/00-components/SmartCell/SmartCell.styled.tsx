@@ -13,8 +13,6 @@ const StyledSmartCell = styled.td<Props>`
   width: ${(props) => `${props.width}px` || "auto"};
   justify-content: center;
   padding: 0.5rem;
-  background-color: red;
-  border: 1px solid #e2e8f0;
   border-radius: 0.25rem;
   color: #1a202c;
   font-size: 0.875rem;

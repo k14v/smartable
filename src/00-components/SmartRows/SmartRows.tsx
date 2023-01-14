@@ -1,14 +1,24 @@
-import Checkbox from "@components/Checkbox";
-import SmartCell from "@components/SmartCell";
+import SmartRow from "@components/SmartRow/SmartRow";
+import {
+  closestCenter,
+  DndContext,
+  DragEndEvent,
+  useDraggable,
+} from "@dnd-kit/core";
+import {
+  arrayMove,
+  SortableContext,
+  verticalListSortingStrategy,
+} from "@dnd-kit/sortable";
 import { ColumnInterface } from "@hooks/use-smart-table";
 import { FC } from "react";
-import StyledSmartRows from "./SmartRows.styled";
 
 interface Props {
   rows: any;
   selectedRows: string[];
   smartColumns: ColumnInterface[];
   selectRows: (row: string) => void;
+  updateRows: (rows: any) => void;
 }
 
 const SmartRows: FC<Props> = ({
@@ -16,28 +26,49 @@ const SmartRows: FC<Props> = ({
   smartColumns,
   selectedRows,
   selectRows,
+  updateRows,
 }) => {
+  const { setNodeRef } = useDraggable({
+    id: "unique-id",
+  });
+
+  const handleDragEnd = (event: DragEndEvent) => {
+    const activeIndex = rows.findIndex(
+      (row: any) => row.id === event.active.id
+    );
+    const overIndex = rows.findIndex((row: any) => row.id === event.over?.id);
+    if (activeIndex !== overIndex) {
+      const newRows = arrayMove(rows, activeIndex, overIndex);
+      updateRows(newRows);
+    }
+  };
+
   return (
     <>
-      {rows &&
-        rows.map((row: any) => (
-          <StyledSmartRows isSelected={selectedRows.includes(row.name)}>
-            <Checkbox
-              width={40}
-              label=""
-              checked={selectedRows.includes(row.name)}
-              onChange={() => selectRows(row.name)}
-            />
-            {smartColumns.map((column: ColumnInterface, idx: number) => (
-              <SmartCell
-                width={column.width || undefined}
-                key={idx}
-                column={column}
-                row={row}
-              />
+      <DndContext
+        collisionDetection={closestCenter}
+        onDragStart={(e) => console.log(e, "I am dragging")}
+        onDragEnd={handleDragEnd}
+      >
+        <SortableContext
+          items={rows.map((row: any) => row.id)}
+          strategy={verticalListSortingStrategy}
+        >
+          {rows &&
+            rows.map((row: any) => (
+              <tr ref={setNodeRef}>
+                <SmartRow
+                  row={row}
+                  rowIsSelected={selectedRows.includes(row.id)}
+                  selectRows={selectRows}
+                  smartColumns={smartColumns}
+                  id={row.id}
+                  key={row.name}
+                />
+              </tr>
             ))}
-          </StyledSmartRows>
-        ))}
+        </SortableContext>
+      </DndContext>
     </>
   );
 };

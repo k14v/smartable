@@ -1,4 +1,4 @@
-import StyledSmartHeader from "@components/SortableComponent/StyledSmartHeader.styled";
+import StyledSmartHeader from "@components/SortableHeader/StyledSmartHeader.styled";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { FC } from "react";

@@ -4,7 +4,7 @@ interface Props {
   isSelected: boolean;
 }
 
-const StyledSmartRows = styled.div<Props>`
+const StyledSmartRow = styled.tr<Props>`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -17,4 +17,4 @@ const StyledSmartRows = styled.div<Props>`
   background-color: ${(props) => (props.isSelected ? "blue" : "white")};
 `;
 
-export default StyledSmartRows;
+export default StyledSmartRow;

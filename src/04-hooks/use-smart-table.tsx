@@ -70,7 +70,7 @@ const useSmartTable = (options: OptionsInterface) => {
     smartRows: rowsState,
     smartColumns: columnState,
     updateCols: useCallback<typeof setColumnState>(
-      (state) => (console.log("pepe"), setColumnState(state)),
+      (state) => setColumnState(state),
       []
     ),
     setPage: useCallback<typeof setPage>(setPage, []),

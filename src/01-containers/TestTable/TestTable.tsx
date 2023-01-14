@@ -47,12 +47,15 @@ const TestTable: FC = () => {
         {smartColumns && smartRows && (
           <>
             <SmartHeaders columns={smartColumns} updateCols={updateCols} />
-            <SmartRows
-              rows={smartRows}
-              smartColumns={smartColumns}
-              selectedRows={selectedRows}
-              selectRows={selectRows}
-            />
+            <tbody>
+              <SmartRows
+                updateRows={setRows}
+                rows={smartRows}
+                smartColumns={smartColumns}
+                selectedRows={selectedRows}
+                selectRows={selectRows}
+              />
+            </tbody>
           </>
         )}
       </StyledTestTable>
